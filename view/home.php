@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>TechShop-->Home</title>
+    <title>TechShop->Home</title>
     <style>
         body {
             font-family: Arial, sans-serif;
