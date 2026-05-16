@@ -109,7 +109,7 @@ if(isset($_SESSION['customer_id'])){
     </form>
 
     <p class="bottom-link">Already have an account? <a href="login.php">Login here</a></p>
-         <p class="bottom-link"> <a href="home.php">BACK</a></p>
+  <p class="bottom-link"> <a href="home.php">BACK</a></p>
 
 
 </div>
