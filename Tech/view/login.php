@@ -114,7 +114,9 @@ if(isset($_SESSION['customer_id'])){
         <input type="submit" name="login" value="Login">
     </form>
 
-    <p class="bottom-link">Don't have an account? <a href="register.php">Register here</a></p>
+    <p class="bottom-link">Don't have an account? <a href="register.php">Register here</a></p> <br>
+            <p class="bottom-link"> <a href="home.php">BACK</a></p>
+
 
 </div>
 </body>
