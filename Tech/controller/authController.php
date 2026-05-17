@@ -1,53 +1,95 @@
 <?php
 session_start();
-require_once('../model/customerModel.php');
+
+require_once(__DIR__ . '/../config/db.php');
+
+if(isset($_GET['logout'])){
+    session_destroy();
+    header('Location: ../view/login.php?success=You have been logged out');
+    exit;
+}
+
+// LOGIN
+if(isset($_POST['login'])){
+    $email    = isset($_POST['email'])    ? trim($_POST['email'])    : '';
+    $password = isset($_POST['password']) ? $_POST['password']       : '';
+
+    // PHP validation
+    if($email === '' || $password === ''){
+        header('Location: ../view/login.php?error=All fields are required');
+        exit;
+    }
+
+    $pdo  = getDB();
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
+
+    // Verify password 
+    $valid = false;
+    if($user){
+        if(password_verify($password, $user['password'])){
+            $valid = true;
+        } elseif($user['password'] === $password){
+            // Fallback for plain text passwords in shared schema sample data
+            $valid = true;
+        }
+    }
+
+    if($valid){
+        $_SESSION['user_id']   = $user['id'];
+        $_SESSION['user_name'] = $user['name'];
+        $_SESSION['user_role'] = $user['role'];
+        header('Location: ../view/home.php?success=Welcome back, ' . urlencode($user['name']));
+    } else {
+        header('Location: ../view/login.php?error=Invalid email or password');
+    }
+    exit;
+}
 
 // REGISTER
 if(isset($_POST['register'])){
-    $full_name = $_POST['full_name'];
-    $username  = $_POST['username'];
-    $password  = $_POST['password'];
+    $name     = isset($_POST['name'])     ? trim($_POST['name'])     : '';
+    $email    = isset($_POST['email'])    ? trim($_POST['email'])    : '';
+    $password = isset($_POST['password']) ? $_POST['password']       : '';
+    $confirm  = isset($_POST['confirm'])  ? $_POST['confirm']        : '';
 
-    if($full_name == "" || $username == "" || $password == ""){
-        header('location: ../view/register.php?error=All fields are required');
+    // PHP validation
+    if($name === '' || $email === '' || $password === '' || $confirm === ''){
+        header('Location: ../view/register.php?error=All fields are required');
+        exit;
+    }
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        header('Location: ../view/register.php?error=Invalid email format');
+        exit;
+    }
+    if(strlen($password) < 8){
+        header('Location: ../view/register.php?error=Password must be at least 8 characters');
+        exit;
+    }
+    if($password !== $confirm){
+        header('Location: ../view/register.php?error=Passwords do not match');
         exit;
     }
 
-    $result = registerCustomer($full_name, $username, $password);
+    $pdo = getDB();
 
-    if($result === true){
-        header('location: ../view/login.php?success=Registration successful. Please login.');
-    } else {
-        header('location: ../view/register.php?error=' . urlencode($result));
-    }
-    exit;
-}
-// LOGIN
-if(isset($_POST['login'])){
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    if($username == "" || $password == ""){
-        header('location: ../view/login.php?error=All fields are required');
+    // email 
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    if($stmt->fetch()){
+        header('Location: ../view/register.php?error=Email already registered');
         exit;
     }
 
-    $customer = loginCustomer($username, $password);
+    // Hash password 
+    $hashed = password_hash($password, PASSWORD_DEFAULT);
 
-    if($customer){
-        $_SESSION['customer_id']   = $customer['id'];
-        $_SESSION['customer_name'] = $customer['full_name'];
-        $_SESSION['username']      = $customer['username'];
-        header('location: ../view/home.php');
-    } else {
-        header('location: ../view/login.php?error=Invalid username or password');
-    }
-    exit;
-}
+    $stmt = $pdo->prepare(
+        "INSERT INTO users(name, email, password, role) VALUES(?,?,?,'customer')"
+    );
+    $stmt->execute([$name, $email, $hashed]);
 
-// LOGOUT
-if(isset($_GET['logout'])){
-    session_destroy();
-    header('location: ../view/login.php?success=Logged out successfully');
+    header('Location: ../view/login.php?success=Registration successful. Please login.');
     exit;
 }
