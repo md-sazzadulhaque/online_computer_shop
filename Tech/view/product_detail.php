@@ -149,7 +149,6 @@ if(isset($_SESSION['user_id'])){
 
     <h2><?php echo htmlspecialchars($product['name']); ?></h2>
 
-    <!-- Product Image -->
     <?php if($product['image_path'] && file_exists('../public/uploads/products/' . $product['image_path'])): ?>
         <img class="product-image"
              src="../public/uploads/products/<?php echo htmlspecialchars($product['image_path']); ?>"
@@ -235,7 +234,6 @@ function addToCart(product_id, stock){
     errEl.style.display = 'none';
     errEl.textContent   = '';
 
-    // JS validation 
     if(isNaN(qty) || qty <= 0 || !Number.isInteger(qty)){
         errEl.textContent   = 'Quantity must be a positive whole number';
         errEl.style.display = 'block';

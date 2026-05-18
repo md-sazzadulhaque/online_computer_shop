@@ -9,12 +9,12 @@ if(isset($_GET['logout'])){
     exit;
 }
 
-// LOGIN
+
 if(isset($_POST['login'])){
     $email    = isset($_POST['email'])    ? trim($_POST['email'])    : '';
     $password = isset($_POST['password']) ? $_POST['password']       : '';
 
-    // PHP validation
+   
     if($email === '' || $password === ''){
         header('Location: ../view/login.php?error=All fields are required');
         exit;
@@ -25,7 +25,6 @@ if(isset($_POST['login'])){
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
-    // Verify password 
     $valid = false;
     if($user){
         if(password_verify($password, $user['password'])){
@@ -47,14 +46,12 @@ if(isset($_POST['login'])){
     exit;
 }
 
-// REGISTER
 if(isset($_POST['register'])){
     $name     = isset($_POST['name'])     ? trim($_POST['name'])     : '';
     $email    = isset($_POST['email'])    ? trim($_POST['email'])    : '';
     $password = isset($_POST['password']) ? $_POST['password']       : '';
     $confirm  = isset($_POST['confirm'])  ? $_POST['confirm']        : '';
 
-    // PHP validation
     if($name === '' || $email === '' || $password === '' || $confirm === ''){
         header('Location: ../view/register.php?error=All fields are required');
         exit;
@@ -74,7 +71,6 @@ if(isset($_POST['register'])){
 
     $pdo = getDB();
 
-    // email 
     $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
     $stmt->execute([$email]);
     if($stmt->fetch()){
@@ -82,7 +78,6 @@ if(isset($_POST['register'])){
         exit;
     }
 
-    // Hash password 
     $hashed = password_hash($password, PASSWORD_DEFAULT);
 
     $stmt = $pdo->prepare(

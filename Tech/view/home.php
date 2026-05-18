@@ -563,7 +563,6 @@ function renderTable(products){
     document.getElementById('product-wrap').innerHTML = html;
 }
 
-// AJAX ADD TO CART
 function addToCart(product_id){
     <?php if(!isset($_SESSION['user_id'])): ?>
         showMsg('Please login to add items to cart', 'error');
@@ -588,7 +587,6 @@ function addToCart(product_id){
     xhr.send(fd);
 }
 
-// XSS protection 
 function escHtml(str){
     var d = document.createElement('div');
     d.textContent = str || '';

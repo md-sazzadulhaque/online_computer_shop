@@ -81,7 +81,6 @@ document.getElementById('reg-form').addEventListener('submit', function(e){
     err.style.display = 'none';
     err.textContent   = '';
 
-    // JS validation
     if(!name || !email || !pass || !confirm){
         e.preventDefault();
         err.textContent = 'All fields are required';
