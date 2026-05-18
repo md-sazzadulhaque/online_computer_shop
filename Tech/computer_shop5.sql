@@ -1,16 +1,9 @@
--- ============================================================
--- Online Computer Shop — Complete Schema
--- DB: computer_shop5
--- Run this ONE FILE only in phpMyAdmin
--- Includes: shared schema + cart table + all sample data
--- ============================================================
+
 
 CREATE DATABASE IF NOT EXISTS computer_shop5;
 USE computer_shop5;
 
--- ------------------------------------------------------------
--- USERS (shared)
--- ------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS users (
     id              INT AUTO_INCREMENT PRIMARY KEY,
     name            VARCHAR(100) NOT NULL,
@@ -21,9 +14,6 @@ CREATE TABLE IF NOT EXISTS users (
     created_at      DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- ------------------------------------------------------------
--- CATEGORIES (shared) — parent_id NULL = top level, NOT NULL = subcategory
--- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS categories (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     name       VARCHAR(100) NOT NULL,
@@ -32,9 +22,7 @@ CREATE TABLE IF NOT EXISTS categories (
     FOREIGN KEY (parent_id) REFERENCES categories(id) ON DELETE RESTRICT
 );
 
--- ------------------------------------------------------------
--- BRANDS (shared)
--- ------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS brands (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(100) NOT NULL,
@@ -43,9 +31,6 @@ CREATE TABLE IF NOT EXISTS brands (
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT
 );
 
--- ------------------------------------------------------------
--- PRODUCTS (shared)
--- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS products (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
     name                VARCHAR(150) NOT NULL,
@@ -61,9 +46,6 @@ CREATE TABLE IF NOT EXISTS products (
     FOREIGN KEY (brand_id)    REFERENCES brands(id)     ON DELETE RESTRICT
 );
 
--- ------------------------------------------------------------
--- CART (Task 3 addition)
--- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS cart (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     user_id    INT NOT NULL,
@@ -74,29 +56,20 @@ CREATE TABLE IF NOT EXISTS cart (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
--- ============================================================
--- SAMPLE DATA
--- ============================================================
 
--- Admin (password: admin123 — plain text as in original shared schema)
 INSERT INTO users (name, email, password, role) VALUES
 ('Admin', 'admin@shop.com', 'admin123', 'admin');
 
--- Sample customer (password: password123 — hashed with password_hash())
 INSERT INTO users (name, email, password, role) VALUES
 ('John Customer', 'john@example.com', '$2y$10$TKh8H1.PfY5WQ6RQRqr.weLSPMnFQMKr.3JJRMqgxAzKlIJjAXhqy', 'customer');
 
--- Top-level categories (parent_id = NULL)
 INSERT INTO categories (name, parent_id) VALUES
 ('RAM',     NULL),
 ('CPU',     NULL),
 ('Storage', NULL),
 ('GPU',     NULL);
 
--- Subcategories (parent_id points to top-level category id)
--- RAM subcategories  → parent_id = 1
--- CPU subcategories  → parent_id = 2
--- Storage subcategories → parent_id = 3
+
 INSERT INTO categories (name, parent_id) VALUES
 ('DDR4',      1),
 ('DDR5',      1),
@@ -105,8 +78,7 @@ INSERT INTO categories (name, parent_id) VALUES
 ('SSD',       3),
 ('HDD',       3);
 
--- Brands linked to top-level category
--- category_id 1=RAM, 2=CPU, 3=Storage, 4=GPU
+
 INSERT INTO brands (name, category_id) VALUES
 ('Corsair', 1),
 ('Kingston', 1),
@@ -116,8 +88,6 @@ INSERT INTO brands (name, category_id) VALUES
 ('ASUS',     4),
 ('Seagate',  3);
 
--- Products
--- category_id here = subcategory id (5=DDR4, 6=DDR5, 7=IntelCPU, 8=AMDCPU, 9=SSD, 10=HDD, 4=GPU top)
 INSERT INTO products (name, description, manufacturer_review, price, category_id, brand_id, stock) VALUES
 ('Corsair Vengeance 16GB DDR4',
  'High performance DDR4 RAM for gaming and productivity. Runs at 3200MHz.',
