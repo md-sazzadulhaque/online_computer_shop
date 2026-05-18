@@ -1,0 +1,11 @@
+Options -Indexes
+RewriteEngine On
+
+# Allow direct access to public assets
+RewriteCond %{REQUEST_URI} ^/task1/public/ [NC]
+RewriteRule ^ - [L]
+
+# Route everything else through index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
