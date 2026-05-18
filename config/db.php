@@ -1,18 +1,10 @@
 <?php
-// config/database.php — compatibility shim
-// Prefer the centralized `config/db.php`. Keep a safe fallback for older code.
+// config/db.php
 
-$central = __DIR__ . '/db.php';
-if (file_exists($central)) {
-    require_once $central;
-    return;
-}
-
-// Fallback definitions (used only if config/db.php is missing)
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'computer_shop');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_NAME', 'computer_shop5');
+define('DB_USER', 'root');       // change if needed
+define('DB_PASS', '');           // change if needed
 define('DB_CHARSET', 'utf8mb4');
 
 function getDB(): PDO {
