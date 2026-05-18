@@ -1,0 +1,103 @@
+* { box-sizing: border-box; }
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    background: #f4f4f4;
+    color: #222;
+}
+h1, h2 { color: #2c3e50; }
+
+.navbar {
+    background: #2c3e50;
+    padding: 10px 20px;
+    color: white;
+}
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin-right: 15px;
+    font-weight: bold;
+}
+.navbar a:hover { text-decoration: underline; }
+
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+table th, table td {
+    border: 1px solid #999;
+    padding: 8px;
+    text-align: left;
+}
+table th { background: #2c3e50; color: white; }
+table tr:nth-child(even) { background: #f9f9f9; }
+
+fieldset {
+    border: 1px solid #aaa;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+legend { font-weight: bold; padding: 0 6px; }
+
+input[type=text], input[type=number], input[type=email],
+input[type=password], input[type=file], textarea, select {
+    width: 100%;
+    padding: 6px;
+    margin: 4px 0 10px 0;
+    border: 1px solid #aaa;
+    font-size: 14px;
+}
+textarea { min-height: 80px; }
+
+input[type=submit], .btn {
+    background: #2c3e50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+input[type=submit]:hover, .btn:hover { background: #1a252f; }
+
+.btn-danger { background: #c0392b; }
+.btn-danger:hover { background: #922b21; }
+
+.msg {
+    background: #dff0d8;
+    border: 1px solid #3c763d;
+    color: #3c763d;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+.error {
+    background: #f2dede;
+    border: 1px solid #a94442;
+    color: #a94442;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+.error ul { margin: 4px 0 0 20px; }
+
+.cards { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
+.card {
+    background: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    padding: 15px;
+    min-width: 180px;
+    flex: 1;
+    text-align: center;
+}
+.card h3 { margin: 0 0 5px 0; color: #2c3e50; }
+.card .num { font-size: 28px; font-weight: bold; color: #c0392b; }
+
+.product-thumb { width: 60px; height: auto; }
